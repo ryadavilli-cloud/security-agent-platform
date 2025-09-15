@@ -1,0 +1,43 @@
+[project]
+name = "security-agent-platform"
+version = "0.1.0"
+description = ""
+authors = [
+    {name = "Your Name",email = "you@example.com"}
+]
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "fastapi (>=0.116.1,<0.117.0)",
+    "uvicorn[standard] (>=0.35.0,<0.36.0)",
+    "pydantic (>=2.11.9,<3.0.0)",
+    "python-dotenv (>=1.1.1,<2.0.0)",
+    "azure-cosmos (>=4.9.0,<5.0.0)",
+    "chromadb (>=1.0.21,<2.0.0)",
+    "opentelemetry-sdk (>=1.37.0,<2.0.0)",
+    "opentelemetry-instrumentation-fastapi (>=0.58b0,<0.59)",
+    "opentelemetry-instrumentation-requests (>=0.58b0,<0.59)",
+    "azure-monitor-opentelemetry-exporter (>=1.0.0b41,<2.0.0)",
+    "opentelemetry-exporter-otlp (>=1.37.0,<2.0.0)",
+    "requests (>=2.32.5,<3.0.0)"
+]
+
+[tool.poetry]
+name = "security-agent-platform"
+version = "0.1.0"
+description = ""
+authors = ["Ravi Y <ryadavillicloud@gmail.com>"]
+package-mode = false
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[dependency-groups]
+dev = [
+    "black (>=25.1.0,<26.0.0)",
+    "ruff (>=0.13.0,<0.14.0)",
+    "bandit (>=1.8.6,<2.0.0)",
+    "pytest (>=8.4.2,<9.0.0)",
+    "httpx (>=0.28.1,<0.29.0)"
+]
