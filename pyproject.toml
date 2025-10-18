@@ -1,43 +1,102 @@
+[build-system]
+requires = ["poetry-core>=1.9.0"]
+build-backend = "poetry.core.masonry.api"
+
 [project]
 name = "security-agent-platform"
 version = "0.1.0"
-description = ""
-authors = [
-    {name = "Your Name",email = "you@example.com"}
-]
+description = "Agentic security assistant (LangGraph + CrewAI + MCP + RAG) – Azure-hosted, cloud-agnostic."
+authors = [{ name = "Ravi Yadavilli", email = "ryadavillicloud@gmail.com" }]
+requires-python = ">=3.11,<3.14"
 readme = "README.md"
-requires-python = ">=3.11"
+
 dependencies = [
-    "fastapi (>=0.116.1,<0.117.0)",
-    "uvicorn[standard] (>=0.35.0,<0.36.0)",
-    "pydantic (>=2.11.9,<3.0.0)",
-    "python-dotenv (>=1.1.1,<2.0.0)",
-    "azure-cosmos (>=4.9.0,<5.0.0)",
-    "chromadb (>=1.0.21,<2.0.0)",
-    "opentelemetry-sdk (>=1.37.0,<2.0.0)",
-    "opentelemetry-instrumentation-fastapi (>=0.58b0,<0.59)",
-    "opentelemetry-instrumentation-requests (>=0.58b0,<0.59)",
-    "azure-monitor-opentelemetry-exporter (>=1.0.0b41,<2.0.0)",
-    "opentelemetry-exporter-otlp (>=1.37.0,<2.0.0)",
-    "requests (>=2.32.5,<3.0.0)"
+  # ============ Core Web/Runtime ============
+  "fastapi == 0.115.0",
+  "uvicorn[standard] == 0.31.1",
+  "pydantic == 2.10.3",                     # Updated to match LangChain 0.3.x requirements
+  "httpx == 0.28.1",
+  "aiohttp == 3.9.5",
+  "redis == 5.0.3",
+  "python-dotenv == 1.0.1",
+
+  # ============ OpenTelemetry (Observability) ============
+  "opentelemetry-api == 1.38.0",
+  "opentelemetry-sdk == 1.38.0",
+  "opentelemetry-exporter-otlp-proto-http == 1.38.0",
+  "opentelemetry-instrumentation-fastapi == 0.59b0",
+  "opentelemetry-instrumentation-asgi == 0.59b0",
+  "opentelemetry-semantic-conventions == 0.59b0",
+  "azure-monitor-opentelemetry-exporter == 1.0.0b31",
+
+  # ============ LLM SDKs ============
+  "openai == 1.57.4",
+  "tiktoken == 0.8.0",
+  "litellm == 1.50.0",
+
+  # ============ Agent Orchestration - LangChain Family ============
+  # CRITICAL: LangChain 0.3.x requires specific langchain-core and langgraph versions
+  "langchain-core == 0.3.29",               # Core abstractions (required by langchain 0.3.x)
+  "langchain == 0.3.13",                    # Main framework
+  "langchain-openai == 0.2.14",            # OpenAI integration
+  "langchain-community == 0.3.13",          # Community integrations
+  "langchain-text-splitters == 0.3.4",      # Text chunking utilities
+  "langgraph == 0.2.58",                    # Stateful workflows (compatible with langchain 0.3.x)
+  "langgraph-checkpoint == 2.0.9",          # State persistence
+  "langsmith == 0.2.11",                    # Observability (optional)
+
+  # ============ Agent Orchestration - CrewAI ============
+  # NOTE: CrewAI 0.203.x is STANDALONE (no LangChain dependency)
+  "crewai == 0.203.1",                      # Latest stable, no LangChain conflicts
+
+  # ============ MCP (Model Context Protocol) ============
+  "mcp == 1.17.0",                          # Core SDK (removed [cli] to avoid conflicts)
+
+  # ============ Structured Outputs ============
+  "instructor == 1.11.3",
+
+  # ============ Vector Stores & Embeddings ============
+  "faiss-cpu == 1.9.0.post1",              # Local vector search (Windows-safe)
+  "pinecone == 5.4.2",                      # Cloud vector DB (optional)
+  "sentence-transformers == 3.3.1",         # Local embeddings
+  "transformers == 4.47.1",                 # Hugging Face models
+
+  # ============ Azure Integrations ============
+  "azure-cosmos == 4.9.0",
+  "azure-search-documents == 11.6.0",       # Azure AI Search
+  "azure-identity == 1.19.0",
+  "azure-storage-blob == 12.24.0",
+
+  # ============ Document Processing ============
+  "pypdf == 5.1.0",                         # PDF parsing (lightweight)
+  "python-docx == 1.1.2",                   # Word documents
+  "markdown == 3.7",                        # Markdown files
+
+  # ============ Reranking & Hybrid Search ============
+  "flashrank == 0.2.9",                     # Fast reranker
+  "rank-bm25 == 0.2.2",                     # BM25 keyword search
+
+  # ============ Caching ============
+  "diskcache == 5.6.3",
+
+  # ============ MLOps & Experiment Tracking ============
+  "mlflow == 2.19.0",
+  "azure-ai-ml == 1.23.0",
+
+  # ============ LangChain Vector Store Integrations ============
+  "langchain-pinecone == 0.2.2",
 ]
-
-[tool.poetry]
-name = "security-agent-platform"
-version = "0.1.0"
-description = ""
-authors = ["Ravi Y <ryadavillicloud@gmail.com>"]
-package-mode = false
-
-[build-system]
-requires = ["poetry-core>=2.0.0,<3.0.0"]
-build-backend = "poetry.core.masonry.api"
 
 [dependency-groups]
 dev = [
-    "black (>=25.1.0,<26.0.0)",
-    "ruff (>=0.13.0,<0.14.0)",
-    "bandit (>=1.8.6,<2.0.0)",
-    "pytest (>=8.4.2,<9.0.0)",
-    "httpx (>=0.28.1,<0.29.0)"
+    "black == 25.1.0",
+    "ruff == 0.13.0",
+    "bandit == 1.8.6",
+    "pytest == 8.4.2",
+    "pytest-asyncio == 0.24.0",
+    "httpx == 0.28.1",
 ]
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+asyncio_mode = "auto"
