@@ -2,23 +2,26 @@
 requires = ["poetry-core>=1.9.0"]
 build-backend = "poetry.core.masonry.api"
 
+[tool.poetry]
+package-mode = false
+
 [project]
 name = "security-agent-platform"
 version = "0.1.0"
 description = "Agentic security assistant (LangGraph + CrewAI + MCP + RAG) – Azure-hosted, cloud-agnostic."
 authors = [{ name = "Ravi Yadavilli", email = "ryadavillicloud@gmail.com" }]
-requires-python = ">=3.11,<3.14"
+requires-python = ">=3.12.4,<3.13"
 readme = "README.md"
 
 dependencies = [
   # ============ Core Web/Runtime ============
   "fastapi == 0.115.0",
   "uvicorn[standard] == 0.31.1",
-  "pydantic == 2.10.3",                     # Updated to match LangChain 0.3.x requirements
+  "pydantic >= 2.11.9, < 3.0.0",              # Updated for crewai compatibility
   "httpx == 0.28.1",
-  "aiohttp == 3.9.5",
+  "aiohttp >= 3.10.0, < 3.11.0",              # Updated for langchain-pinecone
   "redis == 5.0.3",
-  "python-dotenv == 1.0.1",
+  "python-dotenv >= 1.1.1",                    # Updated for crewai
 
   # ============ OpenTelemetry (Observability) ============
   "opentelemetry-api == 1.38.0",
@@ -30,51 +33,49 @@ dependencies = [
   "azure-monitor-opentelemetry-exporter == 1.0.0b31",
 
   # ============ LLM SDKs ============
-  "openai == 1.57.4",
+  "openai >= 1.70.0, < 2.0.0",                # Updated for instructor
   "tiktoken == 0.8.0",
-  "litellm == 1.50.0",
+  "litellm >= 1.74.0",                         # Updated for openai compatibility
 
   # ============ Agent Orchestration - LangChain Family ============
-  # CRITICAL: LangChain 0.3.x requires specific langchain-core and langgraph versions
-  "langchain-core == 0.3.29",               # Core abstractions (required by langchain 0.3.x)
-  "langchain == 0.3.13",                    # Main framework
-  "langchain-openai == 0.2.14",            # OpenAI integration
-  "langchain-community == 0.3.13",          # Community integrations
-  "langchain-text-splitters == 0.3.4",      # Text chunking utilities
-  "langgraph == 0.2.58",                    # Stateful workflows (compatible with langchain 0.3.x)
-  "langgraph-checkpoint == 2.0.9",          # State persistence
-  "langsmith == 0.2.11",                    # Observability (optional)
+  "langchain-core == 0.3.29",
+  "langchain == 0.3.13",
+  "langchain-openai == 0.2.14",
+  "langchain-community == 0.3.13",
+  "langchain-text-splitters == 0.3.4",
+  "langgraph == 0.2.58",
+  "langgraph-checkpoint == 2.0.9",
+  "langsmith == 0.2.11",
 
   # ============ Agent Orchestration - CrewAI ============
-  # NOTE: CrewAI 0.203.x is STANDALONE (no LangChain dependency)
-  "crewai == 0.203.1",                      # Latest stable, no LangChain conflicts
+  "crewai == 0.203.1",
 
   # ============ MCP (Model Context Protocol) ============
-  "mcp == 1.17.0",                          # Core SDK (removed [cli] to avoid conflicts)
+  "mcp == 1.17.0",
 
   # ============ Structured Outputs ============
   "instructor == 1.11.3",
 
   # ============ Vector Stores & Embeddings ============
-  "faiss-cpu == 1.9.0.post1",              # Local vector search (Windows-safe)
-  "pinecone == 5.4.2",                      # Cloud vector DB (optional)
-  "sentence-transformers == 3.3.1",         # Local embeddings
-  "transformers == 4.47.1",                 # Hugging Face models
+  "faiss-cpu == 1.9.0.post1",
+  "pinecone == 5.4.2",
+  "sentence-transformers == 3.3.1",
+  "transformers == 4.47.1",
 
   # ============ Azure Integrations ============
   "azure-cosmos == 4.9.0",
-  "azure-search-documents == 11.6.0",       # Azure AI Search
+  "azure-search-documents == 11.6.0",
   "azure-identity == 1.19.0",
   "azure-storage-blob == 12.24.0",
 
   # ============ Document Processing ============
-  "pypdf == 5.1.0",                         # PDF parsing (lightweight)
-  "python-docx == 1.1.2",                   # Word documents
-  "markdown == 3.7",                        # Markdown files
+  "pypdf == 5.1.0",
+  "python-docx == 1.1.2",
+  "markdown == 3.7",
 
   # ============ Reranking & Hybrid Search ============
-  "flashrank == 0.2.9",                     # Fast reranker
-  "rank-bm25 == 0.2.2",                     # BM25 keyword search
+  "flashrank == 0.2.9",
+  "rank-bm25 == 0.2.2",
 
   # ============ Caching ============
   "diskcache == 5.6.3",
